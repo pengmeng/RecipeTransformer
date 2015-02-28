@@ -1,6 +1,16 @@
+#Python --PyCharm
+
+#MAC system files
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+.idea/
+log/
+tmp/
+*.json
+*.txt
 
 # C extensions
 *.so

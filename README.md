@@ -11,3 +11,4 @@ Third Party Libraries
 ------------------------
 - [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/)
 - [PyMongo](http://www.mongodb.org)
+- [marisa-trie](https://github.com/kmike/marisa-trie)

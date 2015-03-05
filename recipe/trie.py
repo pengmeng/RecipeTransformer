@@ -24,7 +24,7 @@ class Trie(object):
         Trie.TrieDict[name] = mytrie
         return mytrie
 
-    def count(self):
+    def __len__(self):
         return len(self.trie)
 
     def __contains__(self, item):
@@ -32,10 +32,8 @@ class Trie(object):
 
     def prefixesOf(self, item):
         result = self.trie.prefixes(unicode(item))
-        result = map(str, result)
-        return None if result == [] else result
+        return map(str, result)
 
     def byPrefix(self, prefix):
         result = self.trie.keys(unicode(prefix))
-        result = map(str, result)
-        return None if result == [] else result
+        return map(str, result)

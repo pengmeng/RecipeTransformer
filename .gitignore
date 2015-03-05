@@ -1,17 +1,20 @@
 #Python --PyCharm
 
-#MAC system files
+#System files
 .DS_Store
 venv/
+.idea/
+
+#Data file
+*.json
+*.txt
+*.csv
+tmp/
+log/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-.idea/
-log/
-tmp/
-*.json
-*.txt
 
 # C extensions
 *.so

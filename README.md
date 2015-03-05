@@ -9,6 +9,6 @@ Shiv Chandra Kumar, Marc Malinowski, Chris Dayal, Peng Meng
 
 Third Party Libraries
 ------------------------
-- [BeautifulSoup4](http://www.crummy.com/software/BeautifulSoup/)
-- [PyMongo](http://www.mongodb.org)
+- [beautifulsoup4](http://www.crummy.com/software/BeautifulSoup/)
+- [pymongo](http://www.mongodb.org)
 - [marisa-trie](https://github.com/kmike/marisa-trie)

@@ -6,7 +6,7 @@ class MongoJuice(object):
 
     Host = 'localhost'
     Port = 27017
-    Client = pymongo.MongoClient(Host, Port)
+    Client = None
 
     @staticmethod
     def config(param):
@@ -17,6 +17,8 @@ class MongoJuice(object):
             print('Unvalid configuration dict.')
 
     def __init__(self, db_name, coll_name):
+        if not MongoJuice.Client:
+            MongoJuice.Client = pymongo.MongoClient(MongoJuice.Host, MongoJuice.Port)
         self.db_name = db_name
         self.coll_name = coll_name
         self._db = MongoJuice.Client[db_name]

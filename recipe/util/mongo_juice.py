@@ -1,5 +1,4 @@
 __author__ = 'mengpeng'
-
 import pymongo
 
 
@@ -47,8 +46,17 @@ class MongoJuice(object):
         else:
             raise TypeError('Inserting item must be a dict.')
 
+    def findone(self, query=None):
+        if isinstance(query, dict):
+            return self._coll.find_one(spec_or_id=query)
+        else:
+            raise TypeError('Query must be a dict.')
+
     def find(self, query=None, limit=0, sort=None, skip=0):
-        return self._coll.find(spec=query, limit=limit, sort=sort, skip=skip)
+        if isinstance(query, dict):
+            return self._coll.find(spec=query, limit=limit, sort=sort, skip=skip)
+        else:
+            raise TypeError('Query must be a dict')
 
     def count(self):
         return self._coll.count()

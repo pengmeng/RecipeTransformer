@@ -31,9 +31,9 @@ class Trie(object):
         return unicode(item) in self.trie
 
     def prefixesOf(self, item):
-        result = self.trie.prefixes(unicode(item))
+        result = self.trie.prefixes(unicode(item.lower()))
         return map(str, result)
 
     def byPrefix(self, prefix):
-        result = self.trie.keys(unicode(prefix))
+        result = self.trie.keys(unicode(prefix.lower()))
         return map(str, result)

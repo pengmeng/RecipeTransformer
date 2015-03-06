@@ -15,9 +15,9 @@ def tomarisa(filename):
         for line in infile:
             l = line.strip().split(',')
             try:
-                valuelist.extend([unicode(x.strip()) for x in l if x])
+                valuelist.extend([unicode(x.strip().lower()) for x in l if x])
             except UnicodeDecodeError:
-                print('Unexpected character occured in file. Please remove them with English characer.')
+                print('Unexpected characters occured in file. Please remove them with English characers.')
     trie = marisa_trie.Trie(valuelist)
     trie.save(outfilename)
     print('{0} items read from {1} and saved as {2} with {3} items.'

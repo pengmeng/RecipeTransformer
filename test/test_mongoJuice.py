@@ -1,6 +1,6 @@
 __author__ = 'mengpeng'
 from unittest import TestCase
-from recipe.util.mongo_juice import MongoJuice
+from transformer.util.mongo_juice import MongoJuice
 
 
 class TestMongoJuice(TestCase):

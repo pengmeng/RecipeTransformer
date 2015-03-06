@@ -1,6 +1,6 @@
 __author__ = 'mengpeng'
 from bs4 import BeautifulSoup
-from recipe.recipe import Recipe
+from transformer.recipe import Recipe
 
 
 class Handler(object):

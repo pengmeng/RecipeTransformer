@@ -1,6 +1,6 @@
 __author__ = 'mengpeng'
 from unittest import TestCase
-from recipe.trie import Trie
+from transformer.trie import Trie
 
 
 class TestTrie(TestCase):

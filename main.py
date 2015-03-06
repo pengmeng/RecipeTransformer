@@ -25,6 +25,8 @@ if __name__ == '__main__':
     if 'bake' in actions:
         #get all match items with prefix 'bake'
         print(actions.byPrefix('bake'))
+    if 'something' not in actions:
+        print('something is not in actions')
     #get the list of proteins
     proteins = Trie.getTrieByName('proteins')
     #get all item with prefix 'European'

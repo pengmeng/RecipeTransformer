@@ -44,6 +44,7 @@ class Recipe(object):
         return result
 
     def feed(self):
+        self.id = hash(self.url + self.name) & 0xffffffff
         self.feedToolAndAction()
         self.feedStyle()
         self.formatSteps()

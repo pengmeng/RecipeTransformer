@@ -1,6 +1,7 @@
 __author__ = 'mengpeng'
 from transformer.crawler.scraper import Scraper
 from transformer.crawler.handler import RecipeHandler
+from transformer.crawler.handler import LinkHandler
 from transformer.util.mongo_juice import MongoJuice
 
 
@@ -15,13 +16,14 @@ if __name__ == '__main__':
             'http://allrecipes.com/Recipe/Red-Lentil-Burgers/Detail.aspx',
             'http://allrecipes.com/Recipe/Vegan-Red-Lentil-Soup/Detail.aspx']
     hd = RecipeHandler()
-    sp = Scraper(True)
-    result = sp.fetch(urls, hd)
-    mongo = MongoJuice('recipes', 'recipe')
-    for value in result.itervalues():
-        value.feed()
-        mongo.insert(value.tomongo())
-    print('{0} items inserted in mongo.'.format(mongo.count()))
+    sp = Scraper(True, True)
+    result = sp.fetch(urls, RecipeHandler(), LinkHandler())
+    if result:
+        for key, value in result[1].iteritems():
+            print(key)
+            for item in value:
+                print(item)
+
     #results contains recipe objects
     #get each recipe by their url
     # recipe = result[urls[0]]

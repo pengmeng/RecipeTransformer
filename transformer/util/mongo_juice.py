@@ -44,7 +44,7 @@ class MongoJuice(object):
 
     def insert(self, items):
         if isinstance(items, dict):
-            self._coll.insert(items)
+            self._coll.save(items)
         else:
             raise TypeError('Inserting item must be a dict.')
 

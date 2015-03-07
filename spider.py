@@ -34,12 +34,11 @@ if __name__ == '__main__':
                             mongo.insert(value.tomongo())
                             print('{0} is inserted into mongodb.'.format(value.id))
                     if result[1]:
-                        if len(frontier) < 100:
-                            for value in result[1].itervalues():
-                                if len(frontier) >= 100:
-                                    del result[1]
-                                    break
-                                frontier.extend(value)
+                        for value in result[1].itervalues():
+                            if len(frontier) >= 100:
+                                del result[1]
+                                break
+                            frontier.extend(value)
             except KeyboardInterrupt:
                 if frontier:
                     with open('frontier.txt', 'w+') as outfile:

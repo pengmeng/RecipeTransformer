@@ -8,8 +8,27 @@ class Handler(object):
     def __init__(self):
         pass
 
-    def parse(self, *args):
+    def parse(self, html, url):
         raise NotImplementedError
+
+
+class LinkHandler(Handler):
+
+    def __init__(self):
+        super(LinkHandler, self).__init__()
+
+    def parse(self, html, url):
+        bs = BeautifulSoup(html)
+        prefix, suffix = '/Recipe/', 'Detail.aspx'
+        result = []
+        for link in bs.find_all('a', href=True):
+            href = link.get('href')
+            if href and prefix in href and suffix in href:
+                href = href[href.index(prefix):href.index(suffix)+len(suffix)]
+                href = 'http://allrecipes.com' + href
+                result.append(href)
+        result = list(set(result))
+        return result
 
 
 class RecipeHandler(Handler):

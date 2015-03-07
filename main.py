@@ -1,7 +1,6 @@
 __author__ = 'mengpeng'
 from transformer.crawler.scraper import Scraper
 from transformer.crawler.handler import RecipeHandler
-from transformer.trie import Trie
 from transformer.util.mongo_juice import MongoJuice
 
 

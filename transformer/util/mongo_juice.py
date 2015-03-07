@@ -60,5 +60,9 @@ class MongoJuice(object):
         else:
             raise TypeError('Query must be a dict')
 
+    def likefindone(self, key, likevalue):
+        query = {key: {'$regex': likevalue}}
+        return self._coll.find_one(spec_or_id=query)
+
     def count(self):
         return self._coll.count()

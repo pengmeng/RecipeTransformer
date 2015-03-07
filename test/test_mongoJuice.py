@@ -1,4 +1,5 @@
 __author__ = 'mengpeng'
+import unittest
 from unittest import TestCase
 from transformer.util.mongo_juice import MongoJuice
 
@@ -12,5 +13,10 @@ class TestMongoJuice(TestCase):
     def test_insert(self):
         mongo = MongoJuice('recipes', 'test')
         self.assertRaises(TypeError, mongo.insert, [1])
-        #mongo.insert({'test': 'insert', 'value': 2})
+        # mongo.insert({'test': 'insert', 'value': 2})
         # self.assertEqual(3, mongo.count())
+
+    def test_likefindone(self):
+        mongo = MongoJuice('recipes', 'test')
+        self.assertTrue(mongo.likefindone('second', 'noo'))
+        self.assertIsNone(mongo.likefindone('second', 'abdjedg'))

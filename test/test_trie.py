@@ -1,8 +1,9 @@
 __author__ = 'mengpeng'
+import unittest
 from unittest import TestCase
 from transformer.trie import Trie
 
-
+@unittest.skip('succ')
 class TestTrie(TestCase):
     def test_getTrieByName(self):
         self.assertRaises(AttributeError, Trie.getTrieByName, 'unknown')

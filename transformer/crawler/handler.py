@@ -21,7 +21,7 @@ class LinkHandler(Handler):
         bs = BeautifulSoup(html)
         prefix, suffix = '/Recipe/', 'Detail.aspx'
         result = []
-        for link in bs.find_all('a', href=True):
+        for link in iter(bs.find_all('a', href=True, limit=10)):
             href = link.get('href')
             if href and prefix in href and suffix in href:
                 href = href[href.index(prefix):href.index(suffix)+len(suffix)]

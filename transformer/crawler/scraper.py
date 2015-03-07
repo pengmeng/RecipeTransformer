@@ -6,21 +6,41 @@ from handler import RecipeHandler
 
 class Scraper(object):
 
-    def __init__(self, debug=False):
+    def __init__(self, debug=False, spidermode=False):
         self.debug = debug
+        self.spidermode = spidermode
+
+    def exists(self, url):
+        filename = self._tmpfilename(url)
+        return os.path.exists(filename)
 
     def fetchone(self, url, handler):
-        result = self.fetch([url], handler)
-        return result[url]
+        result = self._fetch([url], handler)
+        return result and result[url]
 
-    def fetch(self, urllist, handler):
+    def fetch(self, urllist, *handlers):
+        results = []
+        for handler in handlers:
+            result = self._fetch(urllist, handler)
+            if result:
+                results.append(result)
+        if len(handlers) == 1:
+            return results and results[0]
+        else:
+            return results
+
+    def _fetch(self, urllist, handler):
         result = {}
         for url in urllist:
             filename = self._tmpfilename(url)
             if os.path.exists(filename):
-                html = self._loodfile(filename)
-                if self.debug:
-                    print('Load {0} from file.'.format(filename))
+                if self.spidermode:
+                    # continue
+                    html = self._loadfile(filename)
+                else:
+                    html = self._loadfile(filename)
+                    if self.debug:
+                        print('Load {0} from file.'.format(filename))
             else:
                 html = urllib.urlopen(url).read()
                 self._save2file(filename, html)
@@ -29,7 +49,7 @@ class Scraper(object):
             result[url] = handler.parse(html, url)
         return result
 
-    def _loodfile(self, filename):
+    def _loadfile(self, filename):
         with open(filename, 'r') as infile:
             content = infile.read()
         return content

@@ -52,16 +52,16 @@ class Recipe(object):
     def feedToolAndAction(self):
         toollist = Trie.getTrieByName('tools')
         methodlist = Trie.getTrieByName('actions')
-        for step in self.steps:
+        for step in iter(self.steps):
             words = nltk.word_tokenize(step)
             bigram = nltk.bigrams(words)
-            for word in words:
+            for word in iter(words):
                 match = word.strip().lower()
                 if match in toollist:
                     self.tools.append(word)
                 if match in methodlist:
                     self.methods.append(word)
-            for pair in bigram:
+            for pair in iter(bigram):
                 phrase = ' '.join(pair)
                 match = phrase.lower()
                 if toollist.byPrefix(match):
@@ -75,20 +75,20 @@ class Recipe(object):
         mongo = MongoJuice('recipes', 'styles')
         styles = ['American', 'Italian', 'Asian', 'Mexican']
         counter = Counter({x: 0 for x in styles})
-        for ing in self.inglist:
+        for ing in iter(self.inglist):
             for style in styles:
                 if mongo.likefindone(style, ing.lower()):
                     counter[style] += 1
         self.style = counter.most_common(1)[0][0]
 
     def formatSteps(self):
-        for i in range(len(self.steps)):
+        for i in xrange(len(self.steps)):
             self.steps[i] = self._replaceKeyword(self.steps[i], self.inglist, 'i')
             self.steps[i] = self._replaceKeyword(self.steps[i], self.tools, 't')
             self.steps[i] = self._replaceKeyword(self.steps[i], self.methods, 'm')
         optinglist = self._reParseIng()
-        for i in range(len(self.steps)):
-            for item in optinglist:
+        for i in xrange(len(self.steps)):
+            for item in iter(optinglist):
                 self.steps[i] = self.steps[i].replace(item[0], '{i'+str(item[1])+'}')
         self._removeDuplicatIng(2)
 
@@ -105,16 +105,16 @@ class Recipe(object):
     def _reParseIng(self):
         result = []
         specialcase = ['with', 'ing', 'and', 'the', 'let', 'hot', 'per', 'cool']
-        for step in self.steps:
+        for step in iter(self.steps):
             words = nltk.word_tokenize(step)
             bigram = nltk.bigrams(words)
-            for word in words:
+            for word in iter(words):
                 if len(word) > 2 and word not in specialcase:
                     for i, ing in enumerate(self.inglist):
                         ing = ing.lower()
                         if word.lower() in ing:
                             result.append((word, i))
-            for pair in bigram:
+            for pair in iter(bigram):
                 phrase = ' '.join(pair)
                 for i, ing in enumerate(self.inglist):
                     if phrase.lower() in ing.lower():
@@ -126,8 +126,8 @@ class Recipe(object):
     def _removeDuplicatIng(self, limit):
         if limit < 2:
             raise ValueError('Limit must greater than 1.')
-        for i in range(len(self.steps)):
-            for j in range(len(self.inglist)):
+        for i in xrange(len(self.steps)):
+            for j in xrange(len(self.inglist)):
                 bean = '{i'+str(j)+'}'
-                for k in range(limit, 1, -1):
+                for k in xrange(limit, 1, -1):
                     self.steps[i] = self.steps[i].replace(' '.join([bean]*k), bean)

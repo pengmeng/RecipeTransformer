@@ -49,7 +49,7 @@ class RecipeHandler(Handler):
 
     def parseInteg(self, recipe):
         ingredients = self.bs('li', {'id': 'liIngredient'})
-        for i in range(len(ingredients)):
+        for i in xrange(len(ingredients)):
             each, newing = ingredients[i], {'id': i}
             try:
                 amountstr = each.find('span', {'class': 'ingredient-amount'}).string
@@ -80,10 +80,10 @@ class RecipeHandler(Handler):
     def parseSteps(self, recipe, replaceIng=False):
         steps = self.bs.find('div', {'class': 'directions'}).find('ol')
         steps = steps('li')
-        for each in steps:
+        for each in iter(steps):
             step = each.find('span').string
             if replaceIng:
-                for i in range(len(recipe.inglist)):
+                for i in xrange(len(recipe.inglist)):
                     item = recipe.inglist[i]
                     if item in step:
                         step = step.replace(item, '{'+str(i)+'}')

@@ -31,7 +31,7 @@ class Scraper(object):
 
     def _fetch(self, urllist, handler):
         result = {}
-        for url in urllist:
+        for url in iter(urllist):
             filename = self._tmpfilename(url)
             if os.path.exists(filename):
                 if self.spidermode:

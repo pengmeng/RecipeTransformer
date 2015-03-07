@@ -48,6 +48,6 @@ if __name__ == '__main__':
                 print('KeyboardInterrupt. Spider will stop.')
             except Exception as error:
                 with open('exception.log', 'w+') as logfile:
-                    logfile.write(timestamp() + error.message + '\n')
+                    logfile.write(timestamp() + ' ' + error.message + '\n')
         else:
             print('Exiting.')

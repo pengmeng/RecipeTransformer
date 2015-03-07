@@ -12,3 +12,4 @@ Third Party Libraries
 - [beautifulsoup4](http://www.crummy.com/software/BeautifulSoup/)
 - [pymongo](http://www.mongodb.org)
 - [marisa-trie](https://github.com/kmike/marisa-trie)
+- [nltk](http://www.nltk.org)

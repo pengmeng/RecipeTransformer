@@ -28,3 +28,21 @@ class TestRecipe(TestCase):
         recipe.feedStyle()
         print(recipe.name)
         print(recipe.style)
+
+    @unittest.skip('')
+    def test_formatSteps(self):
+        s = Scraper(True)
+        h = RecipeHandler()
+        recipe = s.fetchone('http://allrecipes.com/Recipe/Vegan-Red-Lentil-Soup/Detail.aspx', h)
+        recipe.feed()
+        print(recipe.name)
+        for each in recipe.steps:
+            print(each)
+
+    @unittest.skip('')
+    def test_str(self):
+        s = Scraper(True)
+        h = RecipeHandler()
+        recipe = s.fetchone('http://allrecipes.com/Recipe/Vegan-Red-Lentil-Soup/Detail.aspx', h)
+        recipe.feed()
+        print(recipe)

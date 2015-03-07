@@ -46,7 +46,7 @@ class RecipeHandler(Handler):
             name = each.find('span', {'class': 'ingredient-name'}).string
             if 'to taste' in name and not newing['quantity']:
                 newing['quantity'] = 'to taste'
-                name = name.replace('to taste', '')
+                name = name.replace(' to taste', '')
             if ',' in name:
                 name = name.split(',')
                 newing['name'] = name[0]

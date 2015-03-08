@@ -64,7 +64,12 @@ class RecipeHandler(Handler):
                 amount = amountstr.split(' ')
                 newing['quantity'] = ' '.join(amount[:-1])
                 newing['measurement'] = amount[-1]
-            name = each.find('span', {'class': 'ingredient-name'}).string
+            try:
+                name = each.find('span', {'class': 'ingredient-name'}).string
+            except AttributeError:
+                name = ''
+                newing['name'] = ''
+                newing['description'] = ''
             if 'to taste' in name and not newing['quantity']:
                 newing['quantity'] = 'to taste'
                 name = name.replace(' to taste', '')
@@ -83,13 +88,12 @@ class RecipeHandler(Handler):
         steps = self.bs.find('div', {'class': 'directions'}).find('ol')
         steps = steps('li')
         for each in iter(steps):
-            step = each.find('span').string
-            if replaceIng:
-                for i in xrange(len(recipe.inglist)):
-                    item = recipe.inglist[i]
-                    if item in step:
-                        step = step.replace(item, '{'+str(i)+'}')
-            recipe.steps.append(step)
+            try:
+                step = each.find('span').string
+            except AttributeError:
+                print('Fail to find steps.')
+            else:
+                recipe.steps.append(step)
 
     def parseTime(self, recipe):
         recipe.time['prep'] = self.parseTimeFormat('prep')

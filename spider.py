@@ -21,8 +21,11 @@ if __name__ == '__main__':
             recipe.feed()
             mongo.insert(recipe.tomongo())
             print('{0} is inserted into mongodb.'.format(recipe.id))
+    elif len(sys.argv) == 3 and sys.argv[1] == 'search':
+        pass
     else:
-        url = 'http://allrecipes.com/'
+        # url = 'http://allrecipes.com/'
+        url = 'http://allrecipes.com/Recipe/Watermelon-Salsa/Detail.aspx'
         frontier, flag = scraper.fetchone(url, LinkHandler()), True
         while flag:
             try:

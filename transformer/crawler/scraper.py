@@ -8,9 +8,10 @@ from transformer.util.tools import gethash
 
 class Scraper(object):
 
-    def __init__(self, debug=False, spidermode=False):
+    def __init__(self, debug=False, spidermode=False, tmpfile=True):
         self.debug = debug
         self.spidermode = spidermode
+        self.tmpfile = tmpfile
 
     def exists(self, url):
         filename = self._tmpfilename(url)
@@ -29,11 +30,15 @@ class Scraper(object):
                     if self.debug:
                         print('Load {0}.html from file.'.format(gethash(url)))
                 else:
+                    if self.debug:
+                        print('{0}.html already visited.'.format(gethash(url)))
                     continue
             else:
                 html = self._download(url)
-                if self.debug:
-                    print('Download {0} and save as {1}.html'.format(url, gethash(url)))
+                if self.tmpfile:
+                    self._save2file(url, html)
+                    if self.debug:
+                        print('Download {0} and save as {1}.html'.format(url, gethash(url)))
             result = []
             for handler in iter(handlers):
                 result.append(handler.parse(html, url))
@@ -75,7 +80,3 @@ if __name__ == '__main__':
     r2 = sp.fetchone('http://allrecipes.com/Recipe/Amish-Meatloaf/Detail.aspx', hd, hd2)
     print(r2[0])
     print(r2[1])
-    # print(r[urls[4]].time)
-    # print(r[urls[1]].ing)
-    # print(r[urls[2]].ing)
-    # print(r[urls[3]].ing)

@@ -20,3 +20,17 @@ class TestMongoJuice(TestCase):
         mongo = MongoJuice('recipes', 'test')
         self.assertTrue(mongo.likefindone('second', 'noo'))
         self.assertIsNone(mongo.likefindone('second', 'abdjedg'))
+
+    def test_remove(self):
+        mongo = MongoJuice('recipes', 'test')
+        mongo.insert({'item': 'to be removed'})
+        length = mongo.count()
+        item = mongo.findone({'item': 'to be removed'})
+        mongo.remove(item['_id'])
+        self.assertEqual(length-1, mongo.count())
+
+    def test_findone(self):
+        mongo = MongoJuice('recipes', 'test')
+        self.assertTrue(mongo.findone())
+        todo = MongoJuice('recipes', 'todo')
+        self.assertEqual(0, todo.count())

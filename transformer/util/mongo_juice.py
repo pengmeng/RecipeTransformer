@@ -49,16 +49,10 @@ class MongoJuice(object):
             raise TypeError('Inserting item must be a dict.')
 
     def findone(self, query=None):
-        if isinstance(query, dict):
-            return self._coll.find_one(spec_or_id=query)
-        else:
-            raise TypeError('Query must be a dict.')
+        return self._coll.find_one(spec_or_id=query)
 
     def find(self, query=None, limit=0, sort=None, skip=0):
-        if isinstance(query, dict):
-            return self._coll.find(spec=query, limit=limit, sort=sort, skip=skip)
-        else:
-            raise TypeError('Query must be a dict')
+        return self._coll.find(spec=query, limit=limit, sort=sort, skip=skip)
 
     def likefindone(self, key, likevalue):
         query = {key: {'$regex': likevalue}}

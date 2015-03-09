@@ -47,11 +47,12 @@ class TestRecipe(TestCase):
         recipe.feed()
         print(recipe)
 
-    # @unittest.skip('')
+    @unittest.skip('')
     def test_feedIngList(self):
         s = Scraper(True)
         h = RecipeHandler()
         recipe = s.fetchone('http://allrecipes.com/Recipe/Pork-Chops-with-Apple-Cider-Glaze/Detail.aspx', h)
+        recipe = recipe[0]
         recipe.feed()
         print(recipe.id)
         print(recipe.ing)

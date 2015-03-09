@@ -1,7 +1,9 @@
 __author__ = 'mengpeng'
 import nltk
+import string
 from trie import Trie
 from util.mongo_juice import MongoJuice
+from util.tools import gethash
 from collections import Counter
 
 
@@ -20,7 +22,7 @@ class Recipe(object):
         self.methods = []
 
     def tomongo(self):
-        item = {'_id': hash(self.url + self.name) & 0xffffffff,
+        item = {'_id': gethash(self.url + self.name),
                 'url': self.url,
                 'name': self.name,
                 'ingredients': self.ing,
@@ -34,7 +36,7 @@ class Recipe(object):
 
     def __str__(self):
         if not self.id:
-            self.id = hash(self.url + self.name) & 0xffffffff
+            self.id = gethash(self.url + self.name)
         result = 'id: {0}\nname: {1}\nurl: {2}\n'.format(self.id, self.name, self.url)
         step = '#'.join(self.steps)
         step = step.replace('{i', '{').format(*self.inglist)
@@ -44,10 +46,34 @@ class Recipe(object):
         return result
 
     def feed(self):
-        self.id = hash(self.url + self.name) & 0xffffffff
+        self.id = gethash(self.url + self.name)
+        self.feedIngList()
         self.feedToolAndAction()
         self.feedStyle()
         self.formatSteps()
+
+    def feedIngList(self):
+        desclist = Trie.getTrieByName('descriptors')
+        preplist = Trie.getTrieByName('preparation')
+        special = ['and']
+        for each in iter(self.ing):
+            name = each['name'].lower()
+            each['description'], each['preparation'] = [], []
+            name = ''.join([c for c in name if c not in string.punctuation])
+            tokens, after = name.split(' '), []
+            for token in iter(tokens):
+                if token in desclist:
+                    each['description'].append(token)
+                elif token in preplist:
+                    each['preparation'].append(token)
+                elif token not in special and token != '':
+                    after.append(token)
+            name = ' '.join(after)
+            if 'to taste' in name:
+                each['quantity'] += 'to taste' if each['quantity'] == '' else ' or to taste'
+                name = name.replace(' to taste', '')
+            each['name'] = name.strip()
+            self.inglist.append(name)
 
     def feedToolAndAction(self):
         toollist = Trie.getTrieByName('tools')

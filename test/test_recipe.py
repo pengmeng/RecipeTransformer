@@ -46,3 +46,11 @@ class TestRecipe(TestCase):
         recipe = s.fetchone('http://allrecipes.com/Recipe/Vegan-Red-Lentil-Soup/Detail.aspx', h)
         recipe.feed()
         print(recipe)
+
+    def test_feedIngList(self):
+        s = Scraper(True)
+        h = RecipeHandler()
+        recipe = s.fetchone('http://allrecipes.com/Recipe/Vegan-Red-Lentil-Soup/Detail.aspx', h)
+        recipe.feedIngList()
+        print(recipe.ing)
+        print(recipe.inglist)

@@ -68,20 +68,7 @@ class RecipeHandler(Handler):
                 name = each.find('span', {'class': 'ingredient-name'}).string
             except AttributeError:
                 name = ''
-                newing['name'] = ''
-                newing['description'] = ''
-            if 'to taste' in name and not newing['quantity']:
-                newing['quantity'] = 'to taste'
-                name = name.replace(' to taste', '')
-            if ',' in name:
-                name = name.split(',')
-                newing['name'] = name[0]
-                newing['description'] = ', '.join(name[1:])
-                recipe.inglist.append(name[0])
-            else:
-                newing['name'] = name
-                newing['description'] = ''
-                recipe.inglist.append(name)
+            newing['name'] = name
             recipe.ing.append(newing)
 
     def parseSteps(self, recipe, replaceIng=False):

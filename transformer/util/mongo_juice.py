@@ -66,3 +66,6 @@ class MongoJuice(object):
 
     def count(self):
         return self._coll.count()
+
+    def remove(self, query):
+        self._coll.remove(query)

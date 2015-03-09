@@ -1,52 +1,123 @@
 __author__ = 'mengpeng'
 import sys
+import urllib
 from transformer.util.mongo_juice import MongoJuice
+from transformer.util.tools import gethash
 from transformer.util.tools import timestamp
 from transformer.crawler.scraper import Scraper
 from transformer.crawler.handler import LinkHandler
 from transformer.crawler.handler import RecipeHandler
 
 
-if __name__ == '__main__':
+def getone(urls):
     mongo = MongoJuice('recipes', 'recipe')
     scraper = Scraper(True, True)
-    if len(sys.argv) == 2:
-        url = sys.argv[1]
-        recipe = scraper.fetchone(url, RecipeHandler())
-        if recipe:
+    for url in iter(urls):
+        result = scraper.fetchone(url, RecipeHandler())
+        if result:
+            recipe = result[0]
             recipe.feed()
             mongo.insert(recipe.tomongo())
             print('{0} is inserted into mongodb.'.format(recipe.id))
-    elif len(sys.argv) == 3 and sys.argv[1] == 'search':
-        pass
+
+
+def start(url):
+    mongo = MongoJuice('recipes', 'recipe')
+    todo = MongoJuice('recipes', 'todo')
+    scraper = Scraper(True, True, False)
+    result = scraper.fetchone(url, LinkHandler())
+    flag = True
+    if result:
+        frontier = result[0]
     else:
-        # url = 'http://allrecipes.com/'
-        url = 'http://allrecipes.com/Recipe/Watermelon-Salsa/Detail.aspx'
-        frontier, flag = scraper.fetchone(url, LinkHandler()), True
-        while flag:
-            try:
-                while frontier:
-                    result = scraper.fetch(frontier, RecipeHandler(), LinkHandler())
+        frontier = []
+        print('No valid url found in {0}'.format(url))
+        print('Will start from todo urls in databases.')
+    while flag:
+        try:
+            if not frontier:
+                if todo.count() == 0:
+                    print('No urls in databases.')
+                    break
+                items = todo.find(limit=20)
+                for each in items:
+                    if not scraper.exists(each['url']):
+                        frontier.append(each['url'])
+                    todo.remove(each['_id'])
+            if not frontier:
+                continue
+            scraper.tmpfile = True
+            results = scraper.fetch(frontier, RecipeHandler(), LinkHandler())
+            frontier = []
+            if results:
+                for result in results.itervalues():
                     if result[0]:
-                        for value in result[0].itervalues():
-                            value.feed()
-                            mongo.insert(value.tomongo())
-                            print('{0} is inserted into mongodb.'.format(value.id))
+                        recipe = result[0]
+                        recipe.feed()
+                        mongo.insert(recipe.tomongo())
+                        print('{0} is inserted into mongodb.'.format(recipe.id))
                     if result[1]:
-                        for value in result[1].itervalues():
-                            if len(frontier) >= 100:
-                                del result[1]
-                                break
-                            frontier.extend(value)
-            except KeyboardInterrupt:
-                if frontier:
-                    with open('frontier.txt', 'w+') as outfile:
-                        outfile.write('\n'.join(frontier))
-                flag = False
-                print('{0} unvisited urls are stored in frontier.txt'.format(len(frontier)))
-                print('KeyboardInterrupt. Spider will stop.')
-            except Exception as error:
-                with open('exception.log', 'w+') as logfile:
-                    logfile.write(timestamp() + ' ' + error.message + '\n')
+                        for each in iter(result[1]):
+                            if not scraper.exists(each):
+                                todo.insert({'_id': gethash(each), 'url': each})
+        except KeyboardInterrupt:
+            if frontier:
+                for each in iter(frontier):
+                    if not scraper.exists(each):
+                        todo.insert({'_id': gethash(each), 'url': each})
+            flag = False
+            print('{0} todo urls are inserted in database'.format(len(frontier)))
+            print('KeyboardInterrupt. Spider will stop.')
+        except Exception as error:
+            with open('exception.log', 'w+') as logfile:
+                logfile.write(timestamp() + ' ' + error.message + '\n')
+    else:
+        print('Exiting.')
+
+
+def search(keyword):
+    url = 'http://allrecipes.com/search/default.aspx?'
+    url += urllib.urlencode({'wt': keyword})
+    mongo = MongoJuice('recipes', 'recipe')
+    scraper = Scraper(True, True, False)
+    urls = scraper.fetchone(url, LinkHandler())
+    if not urls:
+        print('No valid urls found in {0}'.format(url))
+    else:
+        frontier = urls[0][:min(5, len(urls[0]))]
+        scraper.tmpfile = True
+        results = scraper.fetch(frontier, RecipeHandler())
+        if results:
+            for result in results.itervalues():
+                recipe = result[0]
+                recipe.feed()
+                mongo.insert(recipe.tomongo())
+                print('{0} is inserted into mongodb.'.format(recipe.id))
+
+
+def printhelp():
+    print('Missing argument or command. Using as following:')
+    print('To scrape urls:')
+    print('python spider.py [url ...]')
+    print('To start:')
+    print('python spider.py start [seed url]')
+    print('To search:')
+    print('python spider.py search [keyword]')
+
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'start':
+            if len(sys.argv) != 3:
+                print('start command needs a seed url.')
+            else:
+                start(sys.argv[2])
+        elif sys.argv[1] == 'search':
+            if len(sys.argv) != 3:
+                print('search command needs a keyword.')
+            else:
+                search(sys.argv[2])
         else:
-            print('Exiting.')
+            getone(sys.argv[1:])
+    else:
+        printhelp()

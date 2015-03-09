@@ -55,7 +55,7 @@ class Recipe(object):
     def feedIngList(self):
         desclist = Trie.getTrieByName('descriptors')
         preplist = Trie.getTrieByName('preparation')
-        special = ['and']
+        special = ['and', 'until', 'into']
         for each in iter(self.ing):
             name = each['name'].lower()
             each['description'], each['preparation'] = [], []
@@ -157,3 +157,4 @@ class Recipe(object):
                 bean = '{i'+str(j)+'}'
                 for k in xrange(limit, 1, -1):
                     self.steps[i] = self.steps[i].replace(' '.join([bean]*k), bean)
+                    self.steps[i] = self.steps[i].replace(' and '.join([bean]*k), bean)

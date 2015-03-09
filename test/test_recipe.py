@@ -47,10 +47,13 @@ class TestRecipe(TestCase):
         recipe.feed()
         print(recipe)
 
+    # @unittest.skip('')
     def test_feedIngList(self):
         s = Scraper(True)
         h = RecipeHandler()
-        recipe = s.fetchone('http://allrecipes.com/Recipe/Vegan-Red-Lentil-Soup/Detail.aspx', h)
-        recipe.feedIngList()
+        recipe = s.fetchone('http://allrecipes.com/Recipe/Pork-Chops-with-Apple-Cider-Glaze/Detail.aspx', h)
+        recipe.feed()
+        print(recipe.id)
         print(recipe.ing)
         print(recipe.inglist)
+        print(recipe.steps)

@@ -1,14 +1,10 @@
 __author__ = 'mengpeng'
 import sys
-import time
 from transformer.util.mongo_juice import MongoJuice
+from transformer.util.tools import timestamp
 from transformer.crawler.scraper import Scraper
 from transformer.crawler.handler import LinkHandler
 from transformer.crawler.handler import RecipeHandler
-
-
-def timestamp():
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
 
 
 if __name__ == '__main__':

@@ -16,8 +16,9 @@ Third Party Libraries
 
 ToDo
 ------------------------
-- [ ] Refactor Scraper to support handlers sequence
-- [ ] Persist spider frontier in mongo or file
+- [x] Refactor Scraper to support handlers sequence
+- [x] Persist spider frontier in mongo or file
 - [ ] Implement Converter
-- [ ] Add search support for spider
+- [x] Add search support for spider
 - [ ] Add Flask UI
+- [ ] Update MongoJuice to optimize insert

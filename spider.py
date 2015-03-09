@@ -69,7 +69,7 @@ def start(url):
             print('{0} todo urls are inserted in database'.format(len(frontier)))
             print('KeyboardInterrupt. Spider will stop.')
         except Exception as error:
-            with open('exception.log', 'w+') as logfile:
+            with open('exception.log', 'a') as logfile:
                 logfile.write(timestamp() + ' ' + error.message + '\n')
     else:
         print('Exiting.')

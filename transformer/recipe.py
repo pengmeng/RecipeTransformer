@@ -20,6 +20,21 @@ class Recipe(object):
         self.style = ''
         self.tools = []
         self.methods = []
+    
+    @staticmethod
+    def frommongo(item):
+        recipe = Recipe()
+        recipe.id = item['_id']
+        recipe.url = item['url']
+        recipe.name = item['name']
+        recipe.ing = item['ingredients']
+        recipe.inglist = item['inglist']
+        recipe.steps = item['steps']
+        recipe.time = item['time']
+        recipe.style = item['style']
+        recipe.tools = item['tools']
+        recipe.methods = item['methods']
+        return recipe
 
     def tomongo(self):
         item = {'_id': gethash(self.url + self.name),
@@ -72,6 +87,8 @@ class Recipe(object):
             if 'to taste' in name:
                 each['quantity'] += 'to taste' if each['quantity'] == '' else ' or to taste'
                 name = name.replace(' to taste', '')
+            if not name:
+                name = 'notfound'
             each['name'] = name.strip()
             self.inglist.append(name)
 

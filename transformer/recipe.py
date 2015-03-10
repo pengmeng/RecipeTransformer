@@ -173,3 +173,28 @@ class Recipe(object):
                 for k in xrange(limit, 1, -1):
                     self.steps[i] = self.steps[i].replace(' '.join([bean]*k), bean)
                     self.steps[i] = self.steps[i].replace(' and '.join([bean]*k), bean)
+
+    def ingStr(self):
+        result = []
+        for each in self.ing:
+            s = '{0} {1}'.format(each['quantity'], each['measurement'])
+            if each['description']:
+                s += ', ' + str(map(str, each['description']))
+            s += ', ' + each['name']
+            if each['preparation']:
+                s += ', ' + str(map(str, each['preparation']))
+            result.append(s)
+        return result
+
+    def stepStr(self):
+        step = '#'.join(self.steps)
+        step = step.replace('{i', '{').format(*self.inglist)
+        step = step.replace('{t', '{').format(*self.tools)
+        step = step.replace('{m', '{').format(*self.methods)
+        return step.split('#')
+
+    def toolStr(self):
+        return str(map(str, self.tools))
+
+    def methodStr(self):
+        return str(map(str, self.methods))

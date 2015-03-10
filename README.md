@@ -13,6 +13,7 @@ Third Party Libraries
 - [pymongo](http://www.mongodb.org)
 - [marisa-trie](https://github.com/kmike/marisa-trie)
 - [nltk](http://www.nltk.org)
+- [Flask](http://flask.pocoo.org)
 
 ToDo
 ------------------------
@@ -20,5 +21,5 @@ ToDo
 - [x] Persist spider frontier in mongo or file
 - [x] Implement Converter
 - [x] Add search support for spider
-- [ ] Add Flask UI
+- [x] Add Flask UI
 - [x] Update MongoJuice to optimize insert

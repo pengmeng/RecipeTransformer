@@ -21,4 +21,4 @@ ToDo
 - [x] Implement Converter
 - [x] Add search support for spider
 - [ ] Add Flask UI
-- [ ] Update MongoJuice to optimize insert
+- [x] Update MongoJuice to optimize insert

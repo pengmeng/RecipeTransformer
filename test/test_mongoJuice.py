@@ -12,9 +12,9 @@ class TestMongoJuice(TestCase):
 
     def test_insert(self):
         mongo = MongoJuice('recipes', 'test')
+        item = mongo.findone()
         self.assertRaises(TypeError, mongo.insert, [1])
-        # mongo.insert({'test': 'insert', 'value': 2})
-        # self.assertEqual(3, mongo.count())
+        self.assertRaises(AttributeError, mongo.insert, item, False)
 
     def test_likefindone(self):
         mongo = MongoJuice('recipes', 'test')

@@ -1,5 +1,6 @@
 __author__ = 'mengpeng'
 import pymongo
+from pymongo.errors import DuplicateKeyError
 
 
 class MongoJuice(object):
@@ -42,9 +43,15 @@ class MongoJuice(object):
         self.coll_name = value
         self._coll = self.db[value]
 
-    def insert(self, items):
+    def insert(self, items, overwrite=True):
         if isinstance(items, dict):
-            self._coll.save(items)
+            if overwrite:
+                self._coll.save(items)
+            else:
+                try:
+                    self._coll.insert(items)
+                except DuplicateKeyError:
+                    raise AttributeError('_id is already in {0}'.format(self.coll_name))
         else:
             raise TypeError('Inserting item must be a dict.')
 

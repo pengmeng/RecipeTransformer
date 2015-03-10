@@ -67,7 +67,7 @@ class RecipeHandler(Handler):
             try:
                 name = each.find('span', {'class': 'ingredient-name'}).string
             except AttributeError:
-                name = ''
+                name = 'notfound'
             newing['name'] = name
             recipe.ing.append(newing)
 

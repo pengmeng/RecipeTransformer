@@ -18,7 +18,7 @@ ToDo
 ------------------------
 - [x] Refactor Scraper to support handlers sequence
 - [x] Persist spider frontier in mongo or file
-- [ ] Implement Converter
+- [x] Implement Converter
 - [x] Add search support for spider
 - [ ] Add Flask UI
 - [ ] Update MongoJuice to optimize insert

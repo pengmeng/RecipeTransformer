@@ -32,5 +32,3 @@ class TestMongoJuice(TestCase):
     def test_findone(self):
         mongo = MongoJuice('recipes', 'test')
         self.assertTrue(mongo.findone())
-        todo = MongoJuice('recipes', 'todo')
-        self.assertEqual(0, todo.count())

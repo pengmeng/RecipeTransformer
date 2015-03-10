@@ -2,6 +2,7 @@ __author__ = 'mengpeng'
 from transformer.crawler.scraper import Scraper
 from transformer.crawler.handler import RecipeHandler
 from transformer.crawler.handler import LinkHandler
+from transformer.util.mongo_juice import MongoJuice
 
 
 if __name__ == '__main__':
@@ -14,12 +15,17 @@ if __name__ == '__main__':
             'http://allrecipes.com/Recipe/Red-Lentil-Curry/Detail.aspx',
             'http://allrecipes.com/Recipe/Red-Lentil-Burgers/Detail.aspx',
             'http://allrecipes.com/Recipe/Vegan-Red-Lentil-Soup/Detail.aspx']
-    hd = RecipeHandler()
-    sp = Scraper(True, True)
-    result = sp.fetch(urls, RecipeHandler(), LinkHandler())
-    if result:
-        for key, value in result.iteritems():
-            print(key)
-            if len(value) == 2 and value[1]:
-                for each in value[1]:
-                    print(each)
+    # hd = RecipeHandler()
+    # sp = Scraper(True, True)
+    # result = sp.fetch(urls, RecipeHandler(), LinkHandler())
+    # if result:
+    #     for key, value in result.iteritems():
+    #         print(key)
+    #         if len(value) == 2 and value[1]:
+    #             for each in value[1]:
+    #                 print(each)
+    mongo = MongoJuice('recipes', 'recipe')
+    results = mongo.find()
+    for each in results:
+        if '' in each['inglist']:
+            print(each['inglist'])

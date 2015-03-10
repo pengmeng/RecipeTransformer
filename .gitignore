@@ -9,6 +9,7 @@ venv/
 *.json
 *.txt
 *.csv
+*.log
 tmp/
 log/
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <title>Recipe Transformer</title>
+</head>
+
+<body>
+<div id="page">
+    <div id="pagetop">
+        <h1>Recipe Transformer</h1>
+        <div class="links">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Search</a></li>
+                <li><a href="#">{{ title }}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="header">Cusomize your recipes in a new way!</div>
+    <div id="main">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="clear">&nbsp;</div>
+    </div>
+    <div id="footer">
+        <p>
+            <a href="http://www.bryantsmith.com/template">xhtml template</a> by <a href="http://www.bryantsmith.com">web page designer</a></p>
+    </div>
+</div>
+</body>
+</html>

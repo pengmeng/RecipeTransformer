@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main_top">
+    {% if recipe %}
+    <h1>{{ recipe.name }}</h1>
+    {% else %}
+    <h1>Failed to get recipe.</h1>
+    {% endif %}
+</div>
+
+<div class="main_body">
+    {% if recipe %}
+    <span>ID:</span> {{ recipe.id }}<br><br>
+    <span>Url:</span> {{ recipe.url }}<br><br>
+    <span>Style:</span> {{ recipe.style }}<br><br>
+    <span>Ingredients:</span><br>
+    <ul>
+    {% for ing in recipe.ingStr() %}
+        <li>{{ ing }}</li>
+    {% endfor %}
+    </ul>
+    <br>
+    <span>Steps:</span><br>
+    <ul>
+    {% for step in recipe.stepStr() %}
+        <li>{{ step }}</li>
+    {% endfor %}
+    </ul>
+    <br>
+    <span>Prep:</span> {{ recipe.time.prep }} <br><br>
+    <span>Cook:</span> {{ recipe.time.cook }} <br><br>
+    <span>Ready:</span> {{ recipe.time.total }} <br><br>
+    <span>Tools:</span> {{ recipe.toolStr() }} <br><br>
+    <span>Methods:</span> {{ recipe.methodStr() }} <br>
+    {% else %}
+    <span>Please try again</span>
+    {% endif %}
+</div>
+{% endblock %}

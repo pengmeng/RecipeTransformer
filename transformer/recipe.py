@@ -87,8 +87,6 @@ class Recipe(object):
             if 'to taste' in name:
                 each['quantity'] += 'to taste' if each['quantity'] == '' else ' or to taste'
                 name = name.replace(' to taste', '')
-            if not name:
-                name = 'notfound'
             each['name'] = name.strip()
             self.inglist.append(name)
 

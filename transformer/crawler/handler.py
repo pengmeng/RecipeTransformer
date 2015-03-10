@@ -51,8 +51,9 @@ class RecipeHandler(Handler):
 
     def parseInteg(self, recipe):
         ingredients = self.bs('li', {'id': 'liIngredient'})
+        index = 0
         for i in xrange(len(ingredients)):
-            each, newing = ingredients[i], {'id': i}
+            each, newing = ingredients[i], {'id': index}
             try:
                 amountstr = each.find('span', {'class': 'ingredient-amount'}).string
             except AttributeError:
@@ -62,14 +63,35 @@ class RecipeHandler(Handler):
                 if '(' in amountstr:
                     amountstr = amountstr[amountstr.index('(')+1:amountstr.index(')')]
                 amount = amountstr.split(' ')
-                newing['quantity'] = ' '.join(amount[:-1])
-                newing['measurement'] = amount[-1]
+                if len(amount) == 1:
+                    newing['quantity'] = self.parseFloat(amount[0])
+                    newing['measurement'] = ''
+                else:
+                    newing['quantity'] = self.parseFloat(' '.join(amount[:-1]))
+                    newing['measurement'] = amount[-1]
             try:
                 name = each.find('span', {'class': 'ingredient-name'}).string
             except AttributeError:
-                name = 'notfound'
-            newing['name'] = name
-            recipe.ing.append(newing)
+                pass
+            else:
+                newing['name'] = name
+                if not name == u'\xa0':
+                    index += 1
+                    recipe.ing.append(newing)
+
+    def parseFloat(self, s):
+        try:
+            if ' ' in s:
+                part = s.split(' ')
+                result = float(part[0]) + self.parseFloat(part[1])
+            elif '/' in s:
+                part = s.split('/')
+                result = float(part[0]) / float(part[1])
+            else:
+                result = float(s)
+        except IndexError and TypeError and ValueError:
+            return s
+        return round(result, 2)
 
     def parseSteps(self, recipe, replaceIng=False):
         steps = self.bs.find('div', {'class': 'directions'}).find('ol')
@@ -99,4 +121,4 @@ class RecipeHandler(Handler):
             timestr += hrs.find('em').string + ' hours '
         if mins:
             timestr += mins.find('em').string + ' mins'
-        return timestr
+        return timestr.strip()

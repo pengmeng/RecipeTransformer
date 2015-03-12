@@ -89,7 +89,7 @@ class RecipeHandler(Handler):
                 result = float(part[0]) / float(part[1])
             else:
                 result = float(s)
-        except IndexError and TypeError and ValueError:
+        except (IndexError, TypeError, ValueError):
             return s
         return round(result, 2)
 

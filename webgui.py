@@ -48,5 +48,10 @@ def byurl():
     return render_template('display.html')
 
 
+@app.route('/convert/<recipeid>', methods=['POST', 'GET'])
+def convert(recipeid):
+    return recipeid
+
+
 if __name__ == "__main__":
     app.run(debug=True)

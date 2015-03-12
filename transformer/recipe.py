@@ -85,6 +85,7 @@ class Recipe(object):
                     after.append(token)
             name = ' '.join(after)
             if 'to taste' in name:
+                each['quantity'] = str(each['quantity'])
                 each['quantity'] += 'to taste' if each['quantity'] == '' else ' or to taste'
                 name = name.replace(' to taste', '')
             each['name'] = name.strip()

@@ -13,7 +13,7 @@ Web app will run on http://localhost:5000
 
 ### Run spider.py
 spider.py is a web crawler program for collecting recipes
-- Download single url
+- Download urls
 ``` shell
 > python spider.py url1 url2 ...
 ```

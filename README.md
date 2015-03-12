@@ -5,6 +5,11 @@ Project 2 for EECS337@Northwestern U
 
 How To
 ------------------------
+### Install packages
+``` shell
+> pip install -r requirement.txt
+```
+
 ### Run web app
 Web app will run on http://localhost:5000
 ``` shell

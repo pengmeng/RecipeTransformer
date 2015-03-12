@@ -3,6 +3,26 @@
 <div class="main_top">
     {% if recipe %}
     <h1>{{ recipe.name }}</h1>
+    <form action="{{ url_for('convert', recipeid=recipe.id) }}" method="POST">
+        <span>Customize:</span>
+        <select name="totype">
+            <option disabled="True" selected="True">I wanna this</option>
+            <option disabled="True">Styles</option>
+            <option value="American">&nbsp;&nbsp;American</option>
+            <option value="Asian">&nbsp;&nbsp;Asian</option>
+            <option value="Mexican">&nbsp;&nbsp;Mexican</option>
+            <option value="Italian">&nbsp;&nbsp;Italian</option>
+            <option disabled="True">Prefer</option>
+            <option value="vegetarian">&nbsp;&nbsp;Vegeratian</option>
+            <option value="vegan">&nbsp;&nbsp;Vegan</option>
+            <option value="lactose-free">&nbsp;&nbsp;Lactose-Free</option>
+            <option disabled="True">Healthy</option>
+            <option value="low-fat">&nbsp;&nbsp;Low-Fat</option>
+            <option value="low-calorie">&nbsp;&nbsp;Low-Calorie</option>
+            <option value="low-sodium">&nbsp;&nbsp;Low-Sodium</option>
+        </select>
+        <input type="submit" value="I wanna this!">
+    </form><br>
     {% else %}
     <h1>Failed to get recipe.</h1>
     {% endif %}

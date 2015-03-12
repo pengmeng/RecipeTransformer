@@ -7,6 +7,9 @@ from urllib import urlencode
 from transformer.crawler.handler import RecipeHandler
 from transformer.crawler.handler import LinkHandler
 from transformer.crawler.scraper import Scraper
+from transformer.util.mongo_juice import MongoJuice
+from transformer.recipe import Recipe
+from transformer.converter import Converter
 
 app = Flask(__name__)
 
@@ -32,6 +35,7 @@ def bykeyword():
             if result:
                 recipe = result[0]
                 recipe.feed()
+                save2mongo(recipe)
                 return render_template('display.html', title='Display', recipe=recipe)
     return render_template('display.html')
 
@@ -44,14 +48,30 @@ def byurl():
         if result:
             recipe = result[0]
             recipe.feed()
+            save2mongo(recipe)
             return render_template('display.html', title='Display', recipe=recipe)
     return render_template('display.html')
 
 
 @app.route('/convert/<recipeid>', methods=['POST', 'GET'])
 def convert(recipeid):
-    return recipeid
+    recipe = frommongo(recipeid)
+    if recipe:
+        converter = Converter(recipe)
+        if request.form['totype']:
+            newrecipe = converter.convertTo(request.form['totype'])
+            return render_template('display.html', title='Display', recipe=newrecipe)
+    return render_template('display.html')
 
+
+def save2mongo(recipe):
+    mongo.insert(recipe.tomongo())
+
+
+def frommongo(_id):
+    result = mongo.findone({'_id': int(_id)})
+    return result and Recipe.frommongo(result)
 
 if __name__ == "__main__":
+    mongo = MongoJuice('recipes', 'recipe')
     app.run(debug=True)

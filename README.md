@@ -10,6 +10,11 @@ How To
 > pip install -r requirement.txt
 ```
 
+### Build MongoDB
+``` shell
+> sh buildmongo.sh
+```
+
 ### Run web app
 Web app will run on http://localhost:5000
 ``` shell

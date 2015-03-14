@@ -51,10 +51,10 @@ class Converter(object):
         return self.newrecipe
 
     def _convertHealthy(self, keyword):
-        lactose = Trie.getTrieByName(keyword, True)
+        healthy = Trie.getTrieByName(keyword, True)
         recipe = self.newrecipe if self.newrecipe else deepcopy(self.oldrecipe)
         for ing in iter(recipe.ing):
-            for key, value in lactose.items():
+            for key, value in healthy.items():
                 if key in ing['name']:
                     ing['name'] = value
                     recipe.inglist[ing['id']] = ing['name']

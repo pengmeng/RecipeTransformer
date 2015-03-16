@@ -60,4 +60,4 @@ ToDo
 - [x] Add search support for spider
 - [x] Add Flask UI
 - [x] Update MongoJuice to optimize insert
-- [ ] Parse serving # and add serving transformation
+- [x] Parse serving # and add serving transformation

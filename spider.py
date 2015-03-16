@@ -23,11 +23,11 @@ def tograderforamt(recipe):
     result = {'url': recipe.url, 'ingredients': []}
     for ing in iter(recipe.ing):
         item = {}
-        item['name'] = [str(ing['name'])]
-        item['quantity'] = [ing['quantity']]
-        item['measurement'] = [ing['measurement']]
-        item['descriptor'] = [x.lower() for x in map(str, ing['description'])]
-        item['preparation'] = [x.lower() for x in map(str, ing['preparation'])]
+        item['name'] = ing['name']
+        item['quantity'] = ing['quantity']
+        item['measurement'] = ing['measurement']
+        item['descriptor'] = ' '.join(ing['description'])
+        item['preparation'] = ' '.join(ing['preparation'])
         item['prep-description'] = ''
         result['ingredients'].append(item)
     result['cooking tools'] = [x.lower() for x in map(str, recipe.tools)]

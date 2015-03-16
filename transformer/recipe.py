@@ -13,6 +13,7 @@ class Recipe(object):
         self.id = ''
         self.url = ''
         self.name = ''
+        self.serving = 0
         self.ing = []
         self.inglist = []
         self.steps = []
@@ -27,6 +28,7 @@ class Recipe(object):
         recipe.id = item['_id']
         recipe.url = item['url']
         recipe.name = item['name']
+        recipe.serving = item['serving']
         recipe.ing = item['ingredients']
         recipe.inglist = item['inglist']
         recipe.steps = item['steps']
@@ -40,6 +42,7 @@ class Recipe(object):
         item = {'_id': gethash(self.url + self.name),
                 'url': self.url,
                 'name': self.name,
+                'serving': self.serving,
                 'ingredients': self.ing,
                 'inglist': self.inglist,
                 'steps': self.steps,

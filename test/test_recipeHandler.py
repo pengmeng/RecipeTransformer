@@ -4,7 +4,6 @@ from transformer.crawler.handler import RecipeHandler
 
 
 class TestRecipeHandler(TestCase):
-
     def test_parseFloat(self):
         h = RecipeHandler()
         self.assertEqual(1.0, h.parseFloat('1'))
@@ -15,3 +14,10 @@ class TestRecipeHandler(TestCase):
         self.assertEqual('a', h.parseFloat('a'))
         self.assertEqual('a a', h.parseFloat('a a'))
         self.assertEqual('', h.parseFloat(''))
+
+    def test_parseServing(self):
+        with open('./tmp/150539360.html', 'r') as tfile:
+            content = tfile.read()
+        h = RecipeHandler()
+        r = h.parse(content, 'testfile')
+        self.assertEqual(2, r.serving)

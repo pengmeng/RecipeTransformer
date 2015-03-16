@@ -44,10 +44,18 @@ class RecipeHandler(Handler):
         recipe.url = url
         self.bs = BeautifulSoup(html)
         recipe.name = self.bs.find('h1', id='itemTitle', itemprop='name').string
+        self.parseServing(recipe)
         self.parseInteg(recipe)
         self.parseSteps(recipe)
         self.parseTime(recipe)
         return recipe
+
+    def parseServing(self, recipe):
+        try:
+            serving = self.bs.find('span', id='lblYield', itemprop='recipeYield').string
+            recipe.serving = int(serving.split(' ')[0])
+        except AttributeError:
+            pass
 
     def parseInteg(self, recipe):
         ingredients = self.bs('li', {'id': 'liIngredient'})
@@ -93,7 +101,7 @@ class RecipeHandler(Handler):
             return s
         return round(result, 2)
 
-    def parseSteps(self, recipe, replaceIng=False):
+    def parseSteps(self, recipe):
         steps = self.bs.find('div', {'class': 'directions'}).find('ol')
         steps = steps('li')
         for each in iter(steps):

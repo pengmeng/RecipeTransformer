@@ -3,13 +3,22 @@ RecipeTransformer
 
 Project 2 for EECS337@Northwestern U
 
-How To
+Build
 ------------------------
+Please do following steps before running any program.
 ### Install packages
 ``` shell
 > pip install -r requirement.txt
 ```
 
+### Build MongoDB
+A database named 'recipes' will be created.
+``` shell
+> sh buildmongo.sh
+```
+
+How To
+------------------------
 ### Run web app
 Web app will run on http://localhost:5000
 ``` shell

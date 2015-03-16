@@ -4,9 +4,6 @@ from random import randint
 from trie import Trie
 from util.mongo_juice import MongoJuice
 
-lists = {'vegetarian': ['tofu', 'mushroom', 'peppers', 'eggplant'],
-         'vegan': ['tofu', 'mushroom', 'peppers', 'eggplant']}
-
 
 class Converter(object):
 
@@ -17,8 +14,10 @@ class Converter(object):
     def convertTo(self, keyword):
         if keyword in ['American', 'Asian', 'Mexican', 'Italian']:
             new = self._convertStyles(keyword)
-        elif keyword in ['vegetarian', 'vegan']:
-            new = self._convertPrefer(keyword)
+        elif keyword == 'vegetarian':
+            new = self._convertVegetarian()
+        elif keyword == 'vegan':
+            new = self._convertVegan()
         elif keyword in ['low-calorie', 'low-fat', 'low-sodium', 'lactose-free']:
             new = self._convertHealthy(keyword)
         elif keyword.isdigit():
@@ -40,23 +39,36 @@ class Converter(object):
         self.newrecipe = recipe
         return self.newrecipe
 
-    def _convertPrefer(self, keyword):
-        array = lists[keyword]
-        proteins = Trie.getTrieByName('proteins')
-        recipe = self.newrecipe if self.newrecipe else deepcopy(self.oldrecipe)
-        for ing in iter(recipe.ing):
-            for key, value in proteins.items():
-                if key in ing['name']:
-                    ing['name'] = self._random(array)
-                    recipe.inglist[ing['id']] = ing['name']
-        self.newrecipe = recipe
-        return self.newrecipe
-
     def _convertHealthy(self, keyword):
         healthy = Trie.getTrieByName(keyword, True)
         recipe = self.newrecipe if self.newrecipe else deepcopy(self.oldrecipe)
         for ing in iter(recipe.ing):
             for key, value in healthy.items():
+                if key in ing['name']:
+                    ing['name'] = value
+                    recipe.inglist[ing['id']] = ing['name']
+        self.newrecipe = recipe
+        return self.newrecipe
+
+    def _convertVegetarian(self):
+        healthy = {'American': 'mushroom', 'Asian': 'tofu', 'Mexican': 'peppers', 'Italian': 'eggplant'}
+        proteins = Trie.getTrieByName('proteins')
+        recipe = self.newrecipe if self.newrecipe else deepcopy(self.oldrecipe)
+        for ing in iter(recipe.ing):
+            for key, value in proteins.items():
+                if key in ing['name']:
+                    ing['name'] = healthy[recipe.style]
+                    ing['preparation'] = []
+                    ing['description'] = []
+                    recipe.inglist[ing['id']] = ing['name']
+        self.newrecipe = recipe
+        return self.newrecipe
+
+    def _convertVegan(self):
+        vegan = Trie.getTrieByName('vegan', True)
+        recipe = self._convertVegetarian()
+        for ing in iter(recipe.ing):
+            for key, value in vegan.items():
                 if key in ing['name']:
                     ing['name'] = value
                     recipe.inglist[ing['id']] = ing['name']

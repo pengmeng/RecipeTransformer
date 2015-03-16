@@ -9,6 +9,33 @@ from transformer.crawler.handler import LinkHandler
 from transformer.crawler.handler import RecipeHandler
 
 
+def forgrader(url):
+    scraper = Scraper(True)
+    result = scraper.fetchone(url, RecipeHandler())
+    if result:
+        recipe = result[0]
+        recipe.feed()
+        return tograderforamt(recipe)
+    raise Warning('No result from ' + url)
+
+
+def tograderforamt(recipe):
+    result = {'url': recipe.url, 'ingredients': []}
+    for ing in iter(recipe.ing):
+        item = {}
+        item['name'] = [str(ing['name'])]
+        item['quantity'] = [ing['quantity']]
+        item['measurement'] = [ing['measurement']]
+        item['descriptor'] = [x.lower() for x in map(str, ing['description'])]
+        item['preparation'] = [x.lower() for x in map(str, ing['preparation'])]
+        item['prep-description'] = ''
+        result['ingredients'].append(item)
+    result['cooking tools'] = [x.lower() for x in map(str, recipe.tools)]
+    result['cooking methods'] = [x.lower() for x in map(str, recipe.methods)]
+    result['primary cooking method'] = ''
+    return result
+
+
 def getone(urls):
     mongo = MongoJuice('recipes', 'recipe')
     scraper = Scraper(True, True)

@@ -64,6 +64,17 @@ def convert(recipeid):
     return render_template('display.html')
 
 
+@app.route('/serving/<recipeid>', methods=['POST', 'GET'])
+def serving(recipeid):
+    recipe = frommongo(recipeid)
+    if recipe:
+        converter = Converter(recipe)
+        if request.form['serving']:
+            newrecipe = converter.convertTo(request.form['serving'])
+            return render_template('display.html', title='Display', recipe=newrecipe)
+    return render_template('display.html')
+
+
 def save2mongo(recipe):
     mongo.insert(recipe.tomongo())
 

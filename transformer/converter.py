@@ -21,6 +21,8 @@ class Converter(object):
             new = self._convertPrefer(keyword)
         elif keyword in ['low-calorie', 'low-fat', 'low-sodium', 'lactose-free']:
             new = self._convertHealthy(keyword)
+        elif keyword.isdigit():
+            new = self._convertServing(keyword)
         else:
             raise AttributeError('keyword {0} is unknown.'.format(keyword))
         return new
@@ -60,6 +62,18 @@ class Converter(object):
                     recipe.inglist[ing['id']] = ing['name']
         self.newrecipe = recipe
         return self.newrecipe
+
+    def _convertServing(self, serving):
+        recipe = self.newrecipe if self.newrecipe else deepcopy(self.oldrecipe)
+        factor = float(serving) / recipe.serving
+        for ing in iter(recipe.ing):
+            try:
+                ing['quantity'] *= factor
+            except (KeyError, TypeError):
+                pass
+        recipe.serving = serving
+        self.newrecipe = recipe
+        return recipe
 
     def _random(self, array):
         return array[randint(0, len(array) - 1)]

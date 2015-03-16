@@ -33,6 +33,12 @@
     <span>ID:</span> {{ recipe.id }}<br><br>
     <span>Url:</span> {{ recipe.url }}<br><br>
     <span>Style:</span> {{ recipe.style }}<br><br>
+    <form action="{{ url_for('serving', recipeid=recipe.id) }}" method="POST">
+        <span>Serving:</span> {{ recipe.serving }}
+        <input type="text" value="{{ recipe.serving}}" name="serving" style="width:20pt;"/>
+        <input type="submit" value="Change!"/>
+    </form>
+    <br>
     <span>Ingredients:</span><br>
     <ul>
     {% for ing in recipe.ingStr() %}

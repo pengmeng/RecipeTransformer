@@ -7,6 +7,7 @@ Build
 ------------------------
 Please do following steps before running any program.
 ### Install packages
+Please make sure you have gcc or other compilers installed on your machine
 ``` shell
 > pip install -r requirement.txt
 ```

@@ -22,7 +22,7 @@ How To
 ### Run web app
 Web app will run on http://localhost:5000
 ``` shell
-> python webgui.py
+> python webapp.py
 ```
 
 ### Run spider.py

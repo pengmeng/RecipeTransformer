@@ -2,8 +2,8 @@ __author__ = 'mengpeng'
 import time
 
 
-def gethash(string, hashrange=0xffffffff):
-    return hash(string) & hashrange
+def gethash(string, cap=0xffffffff):
+    return hash(string) & cap
 
 
 def timestamp():
